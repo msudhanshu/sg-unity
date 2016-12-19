@@ -3,6 +3,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using KiwiCommonDatabase;
+using SgUnity;
 
 public class SeedData
 {
@@ -17,7 +18,8 @@ public class SeedData
 		}
 
 		public static void SeedDataFromResources() {
-			SeedClass<CategoryState>();			
+			throw new Exception ("SeedClass<CategoryState>(); called and crashed");
+			//SeedClass<CategoryState>();			
 		}
 
 		private static void SeedClass<T>() {

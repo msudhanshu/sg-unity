@@ -1,5 +1,10 @@
 using System;
 using UnityEngine;
+using KiwiCommonDatabase;
+
+
+namespace SgUnity
+{
 public class DaemonDownloadable : DownloadableAsset
 {
 		public DaemonDownloadable (string bundleName, int priority) : base(bundleName, null, priority, OnDownloadComplete, null)
@@ -18,5 +23,6 @@ public class DaemonDownloadable : DownloadableAsset
 				return false;
 		}
 
+}
 }
 

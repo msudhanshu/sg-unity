@@ -3,7 +3,11 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using DownloadManager;
+using KiwiCommonDatabase;
 
+
+namespace SgUnity
+{
 public class PendingDownloadsManager
 {
 		public bool initialised = false;
@@ -53,4 +57,5 @@ public class PendingDownloadsManager
 						DatabaseManager.GetInstance ().GetDbHelper ().Update<PendingDownload> (pendingDownload);
 				}
 		}
+}
 }

@@ -166,7 +166,7 @@ public class ServerSyncManager : Manager<ServerSyncManager> {
 				
 				appendedUrlsString = appenededUrls.ToString() ;
 			//	if(!appendedUrlsString.contains(NEIGHBOR_DIFF_REQ_KEY)) {
-					batchData.Append("&user_id=" + Config.USER_ID);
+				batchData.Append("&user_id=" + SgConfig.USER_ID);
 			//		batchData.append("&user_shard=" + Config.USER_SHARD);
 			//		batchData.append("&user_social_shard=" + Config.USER_SOCIAL_SHARD) ;
 			/*	} else {

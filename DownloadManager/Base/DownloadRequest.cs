@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using System.Collections;
+using SgUnity;
 namespace DownloadManager
 {
 		public class DownloadRequest

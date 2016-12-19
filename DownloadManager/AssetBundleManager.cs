@@ -3,7 +3,8 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using DownloadManager;
-
+namespace SgUnity
+{
 public class AssetBundleManager : Manager<AssetBundleManager>
 {
 		static Dictionary<string, AssetBundle> assetBundles = new Dictionary<string, AssetBundle> ();
@@ -71,4 +72,5 @@ public class AssetBundleManager : Manager<AssetBundleManager>
 				}
 		}
 
+}
 }

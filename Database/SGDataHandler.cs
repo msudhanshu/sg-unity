@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using Newtonsoft.Json;
 using System.Reflection;
 using KiwiCommonDatabase;
-using Expansion;
 using SgUnity;
 namespace KiwiCommonDatabase
 {
@@ -46,7 +45,7 @@ namespace KiwiCommonDatabase
 
 
 	IEnumerator GetDiff() {
-		int userId = PlayerPrefs.GetInt(Config.USER_ID_KEY, -1);
+			int userId = PlayerPrefs.GetInt(SgConfig.USER_ID_KEY, -1);
 		if (userId == -1) {
 			newUserUrl = newUserUrl.Replace(EMAIL_TAG, SystemInfo.deviceName).Replace(DEVICE_TAG, SystemInfo.deviceUniqueIdentifier);
 			Debug.LogWarning("User URL = " + newUserUrl);
@@ -62,10 +61,10 @@ namespace KiwiCommonDatabase
 			NewUserResponse response = JsonConvert.DeserializeObject<NewUserResponse>(newUserRequest.text);
 			userId = Convert.ToInt32(response.itemId);
             Debug.LogWarning("User Id created = " + userId);
-			PlayerPrefs.SetInt(Config.USER_ID_KEY, userId);
+				PlayerPrefs.SetInt(SgConfig.USER_ID_KEY, userId);
 		}
 
-		Config.USER_ID = userId;
+			SgConfig.USER_ID = userId;
 		diffUrl = diffUrl.Replace(USERID_TAG, string.Format("" + userId)).Replace(VERSION_TAG, string.Format("" + GetCurrentDbVersion()));
 		Debug.LogWarning("Diff URL = " + diffUrl);
 
@@ -93,8 +92,11 @@ namespace KiwiCommonDatabase
 			wrapper = JsonConvert.DeserializeObject<T> (jsondiff);
             wrapper.InitNonDiffMarketTable();
 			wrapper.InitializeTime();
-            GameParamModel.InitGameParams();
-            //TODO : MANJEET : MANGODB DOESN'T SET WITH SQL, SO NO LOCAL DB FOR NOW
+            
+				//GameParamModel.InitGameParams();
+            
+
+				//TODO : MANJEET : MANGODB DOESN'T SET WITH SQL, SO NO LOCAL DB FOR NOW
 			//wrapper.InsertIntoDatabase ();
             //TODO : just save the diff in local file for now and reload that at launch time
 

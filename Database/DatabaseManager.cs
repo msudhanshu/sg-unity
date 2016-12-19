@@ -100,6 +100,41 @@ namespace KiwiCommonDatabase
 			return dbHelper;
 		}
 
+
+		public void createSchema ()
+		{
+			foreach (string typeName in DB_TABLES) {
+				MethodInfo method = getGenericHelperMethod (typeName, "CreateTableIfNotExists");
+				if (method != null)
+					method.Invoke (dbHelper, new object[]{});
+			}
+
+		}
+
+		private MethodInfo getGenericHelperMethod (string typeName, string methodName)
+		{
+			System.Type dtype = System.Type.GetType (typeName);
+			System.Type dbInterface = dbHelper.GetType ().GetInterfaces ().Single (e => e.Name == "IBaseDbHelper");
+			MethodInfo method = null;
+			if (dtype != null && dbInterface != null) {
+				method = dbInterface.GetMethod (methodName).MakeGenericMethod (new System.Type[] { dtype });
+			}
+			return method; 
+
+		}
+
+		public void updateSchema ()
+		{
+			foreach (string typeName in DB_TABLES) {
+				MethodInfo method = getGenericHelperMethod (typeName, "UpdateTable");
+				if (method != null)
+					method.Invoke (dbHelper, new object[]{});
+			}
+		}
+
+	}
+
+	#if TEST_DB
 		/**
 		 * Test methods for database operations
 		 **/
@@ -320,40 +355,8 @@ namespace KiwiCommonDatabase
 
 	**/
 		}
+	#endif
 
-
-		public void createSchema ()
-		{
-			foreach (string typeName in DB_TABLES) {
-				MethodInfo method = getGenericHelperMethod (typeName, "CreateTableIfNotExists");
-				if (method != null)
-					method.Invoke (dbHelper, new object[]{});
-			}
-			
-		}
-		
-		private MethodInfo getGenericHelperMethod (string typeName, string methodName)
-		{
-			System.Type dtype = System.Type.GetType (typeName);
-			System.Type dbInterface = dbHelper.GetType ().GetInterfaces ().Single (e => e.Name == "IBaseDbHelper");
-			MethodInfo method = null;
-			if (dtype != null && dbInterface != null) {
-				method = dbInterface.GetMethod (methodName).MakeGenericMethod (new System.Type[] { dtype });
-			}
-			return method; 
-			
-		}
-		
-		public void updateSchema ()
-		{
-			foreach (string typeName in DB_TABLES) {
-				MethodInfo method = getGenericHelperMethod (typeName, "UpdateTable");
-				if (method != null)
-					method.Invoke (dbHelper, new object[]{});
-			}
-		}
-
-	}
 
 //    public static Level GetLevelObject(int level, DbResource res) {
 //        try{
