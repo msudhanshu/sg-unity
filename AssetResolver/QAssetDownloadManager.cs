@@ -20,23 +20,23 @@ public class QAssetDownloadManager : Manager<QAssetDownloadManager>  {
        
     }
 
-    public void SetQuestionMusic(QuestionAsset questionAsset, IAssetLoadCallback<AudioClip> callback) {
+	public void SetQuestionMusic(IAssetRequest questionAsset, IAssetLoadCallback<AudioClip> callback) {
        // gameObject.AddComponent<QMusicDownloader<AudioClip>>().SetQuestionMusic(questionAsset,callback) ;
         (new QAssetDownloader<AudioClip>(this)).SetQuestionAsset(questionAsset,callback) ;
 
     }
 
-    public void SetQuestionImage(QuestionAsset questionAsset, IAssetLoadCallback<Texture2D> callback) {
+	public void SetQuestionImage(IAssetRequest questionAsset, IAssetLoadCallback<Texture2D> callback) {
         // gameObject.AddComponent<QMusicDownloader<AudioClip>>().SetQuestionMusic(questionAsset,callback) ;
         (new QAssetDownloader<Texture2D>(this)).SetQuestionAsset(questionAsset,callback) ;
     }
 
-    public void SetQuestionGifSprite(QuestionAsset questionAsset, IAssetLoadCallback<Texture2D> callback) {
+	public void SetQuestionGifSprite(IAssetRequest questionAsset, IAssetLoadCallback<Texture2D> callback) {
         // gameObject.AddComponent<QMusicDownloader<AudioClip>>().SetQuestionMusic(questionAsset,callback) ;
         (new QAssetDownloader<Texture2D>(this)).SetQuestionAsset(questionAsset,callback) ;
     }
 
-    public void SetQuestionGif(QuestionAsset questionAsset, IAssetLoadCallback<List<Texture2D>> callback) {
+	public void SetQuestionGif(IAssetRequest questionAsset, IAssetLoadCallback<List<Texture2D>> callback) {
         (new QAssetGifDownloader(this)).SetQuestionGifImages(questionAsset,callback) ;
     }
 }

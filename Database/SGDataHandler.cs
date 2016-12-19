@@ -10,11 +10,14 @@ using SgUnity;
 namespace KiwiCommonDatabase
 {
     
-    public class DataHandler : Manager<DataHandler> {
+	public class SGDataHandler <M,T> : Manager<M> 
+		where M : Manager<M>
+		where T : ISGDataWrapper {
+
 	public bool USE_PACKED_DB = true;
 	public TextAsset packedDb;
 
-	public static UserDataWrapper wrapper = null;
+	public static T wrapper = null;
 	bool diffRequestCompleted = false;
 	bool diffRequestSucceeded = false;
     string diffUrl = ServerConfig.BASE_URL+"diff?user_id=<user_id>&version=<version>";
@@ -87,7 +90,7 @@ namespace KiwiCommonDatabase
 		if(jsondiff != null)
 		{
 			Debug.Log("jsondiff "+jsondiff);
-			wrapper = JsonConvert.DeserializeObject<UserDataWrapper> (jsondiff);
+			wrapper = JsonConvert.DeserializeObject<T> (jsondiff);
             wrapper.InitNonDiffMarketTable();
 			wrapper.InitializeTime();
             GameParamModel.InitGameParams();

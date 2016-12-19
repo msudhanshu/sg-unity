@@ -11,15 +11,37 @@ namespace KiwiCommonDatabase
 {
     partial class DatabaseManager : Manager<DatabaseManager>
 	{
+		public TextAsset db_tables_list;
 		public SimpleSQLManager _dbManager;
 		private static IBaseDbHelper dbHelper = null;
 		private static DatabaseManager _instance;
-		public static string[] DB_TABLES = new string[]{"MarketVersion", "QuestionModel", "PackageModel"};
+		public List<string> DB_TABLES = new List<string> ();//new string[]{"MarketVersion", "QuestionModel", "PackageModel"};
+		string[] COMMON_DB_TABLES = new string[]{"MarketVersion"};
+
+		public static bool IsDbTable(FieldInfo field) {
+			foreach (object attribute in field.GetCustomAttributes(true))
+			{
+				if (attribute is DbTableAttribute) return true;
+			}
+			return false;
+		}
+
+		private void DeserializeDbTableList() {
+			string[] mapfile = db_tables_list.text.Split ("\n"[0]);
+			DB_TABLES.Clear();
+			foreach (String s in COMMON_DB_TABLES) {
+				DB_TABLES.Add (s);
+			}
+			foreach (String s in mapfile) {
+				DB_TABLES.Add (s);
+			}
+		}
 
 		override public void StartInit ()
 		{
 				Debug.Log ("For iOS: Setting Application.targetFrameRate = 60");
 				Application.targetFrameRate = 60;
+
 
 				if (dbHelper == null) {
 						CachedSimpleSqlDbHelper ssDbHelper = CachedSimpleSqlDbHelper.GetInstance ();
@@ -30,6 +52,8 @@ namespace KiwiCommonDatabase
 								Debug.LogError ("You need to have an SimpleSQLManager set up from Unity.");
 						}
 				}
+
+			DeserializeDbTableList ();
 				
 				//testAssetData();
 				//testAllDbOps ();

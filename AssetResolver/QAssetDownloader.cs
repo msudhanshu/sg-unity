@@ -11,7 +11,7 @@ using System.IO;
 public class QAssetDownloader<T> : MonoBehaviour  where T : UnityEngine.Object{
     protected T loadedAsset;
     //private IAssetLoadCallback<T> callback;
-    protected QuestionAsset questionAsset;
+	protected IAssetRequest questionAsset;
   //  private AudioSource audioSource;
     protected MonoBehaviour mbObject;
 
@@ -23,14 +23,14 @@ public class QAssetDownloader<T> : MonoBehaviour  where T : UnityEngine.Object{
         this.mbObject = mbObject;
     }
 
-    public void SetQuestionAsset(QuestionAsset questionAsset, IAssetLoadCallback<T> callback) {
+	public void SetQuestionAsset(IAssetRequest questionAsset, IAssetLoadCallback<T> callback) {
         this.questionAsset = questionAsset;
         mbObject.StartCoroutine(CoroutineLoadImage(callback));
     }
 
     IEnumerator CoroutineLoadImage(IAssetLoadCallback<T> callback) {
         T loadedAsset ;
-        yield return  mbObject.StartCoroutine(CoroutineResolveLoad(questionAsset.assetUrl,
+		yield return  mbObject.StartCoroutine(CoroutineResolveLoad(questionAsset.getAssetUrl(),
             t =>  {
                 loadedAsset = t;
                 if(loadedAsset) callback.assetLoadSuccess(loadedAsset);
@@ -80,9 +80,12 @@ public class QAssetDownloader<T> : MonoBehaviour  where T : UnityEngine.Object{
         //questionAsset.cdn = "";
         bool retry = true;
         bool tryEveryWhere = false;
+
+		CdnType cdnType = questionAsset.getCdnType ();
+
         while(retry) {
             
-        if(tryEveryWhere || questionAsset.cdnType == CdnType.RESOURCE) {
+        if(tryEveryWhere || cdnType == CdnType.RESOURCE) {
         //Try on resources
             Debug.Log("Try downloading in res "+url );
             loadedAsset = Resources.Load<T>(getResourceUrl(url));
@@ -93,7 +96,7 @@ public class QAssetDownloader<T> : MonoBehaviour  where T : UnityEngine.Object{
             }
         }
 
-        if(tryEveryWhere || questionAsset.cdnType == CdnType.APK) {
+        if(tryEveryWhere || cdnType == CdnType.APK) {
             //try on apk but not resource
 
                 #if UNITY_EDITOR
@@ -108,7 +111,7 @@ public class QAssetDownloader<T> : MonoBehaviour  where T : UnityEngine.Object{
                 #endif
         }
                
-        if(tryEveryWhere || questionAsset.cdnType == CdnType.SDCARD) {
+        if(tryEveryWhere || cdnType == CdnType.SDCARD) {
             //Try on sdcard
             Debug.Log("loading failed  and try again in sdcard "+getSdCardPath(url) );
             yield return mbObject.StartCoroutine(CoroutineLoadUrl(getSdCardPath(url),  t => loadedAsset = t ));
@@ -119,7 +122,7 @@ public class QAssetDownloader<T> : MonoBehaviour  where T : UnityEngine.Object{
             }
         }
 
-        if(tryEveryWhere || questionAsset.cdnType == CdnType.SERVER) {
+        if(tryEveryWhere || cdnType == CdnType.SERVER) {
             Debug.Log("loading failed  and try again in server "+ getServerUrl(url) );
             yield  return mbObject.StartCoroutine(CoroutineLoadUrl(getServerUrl(url),  t => loadedAsset = t ));
             if(loadedAsset) {
@@ -129,7 +132,7 @@ public class QAssetDownloader<T> : MonoBehaviour  where T : UnityEngine.Object{
             }
         }
 
-        if(tryEveryWhere || questionAsset.cdnType == CdnType.CDN) {
+        if(tryEveryWhere || cdnType == CdnType.CDN) {
             Debug.Log("loading failed  and try again in cdn "+ getCdnUrl(url) );
             yield  return mbObject.StartCoroutine(CoroutineLoadUrl(getCdnUrl(url), t => loadedAsset = t ));
             if(loadedAsset) {
@@ -143,7 +146,7 @@ public class QAssetDownloader<T> : MonoBehaviour  where T : UnityEngine.Object{
             retry = false;
             tryEveryWhere = false;
         } else {
-            Debug.Log("Asset Load retrying everywhere now since couldn't found in "+questionAsset.cdn);
+				Debug.Log("Asset Load retrying everywhere now since couldn't found in "+questionAsset.getCdnType());
             tryEveryWhere = true;
         }
 

@@ -5,6 +5,30 @@ using UnityEngine.UI;
 using System;
 using SgUnity;
 
+public enum AssetType {
+	IMAGE,
+	MUSIC,
+	GIF,
+	TEXT,
+	SPRITE,
+	DEFAULT
+}
+
+public enum CdnType {
+	UNKNOWN,
+	RESOURCE,
+	APK,
+	SDCARD,
+	SERVER,
+	CDN
+}
+
+
 public interface IAssetRequest  {
-   
+
+	string getAssetUrl ();
+	CdnType getCdnType();
+	int getGifFrameCount();
+	bool getIsGifSprite();
+	AssetType getAssetType ();
 }

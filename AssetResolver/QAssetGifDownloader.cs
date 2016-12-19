@@ -14,10 +14,10 @@ public class QAssetGifDownloader : QAssetDownloader<Texture2D> {
         this.mbObject = mbObject;
     }
 
-    public void SetQuestionGifImages(QuestionAsset questionAsset, IAssetLoadCallback<List<Texture2D>> imagesLoadCallback)
+	public void SetQuestionGifImages(IAssetRequest questionAsset, IAssetLoadCallback<List<Texture2D>> imagesLoadCallback)
     {
         this.questionAsset = questionAsset;
-        gifResFolder = Path.GetFileNameWithoutExtension(questionAsset.assetUrl);
+		gifResFolder = Path.GetFileNameWithoutExtension(questionAsset.getAssetUrl());
         mbObject.StartCoroutine(CoroutineLoadGifImages(imagesLoadCallback));
     }
 
@@ -47,7 +47,7 @@ public class QAssetGifDownloader : QAssetDownloader<Texture2D> {
         bool tryEveryWhere = false;
         while(retry) {
             
-          if(questionAsset.questionType == QuestionType.GIF && !tryEveryWhere && (questionAsset.cdnType==CdnType.RESOURCE || questionAsset.cdnType==CdnType.UNKNOWN) && !questionAsset.isGifSprite) {
+			if(questionAsset.getAssetType() == AssetType.GIF && !tryEveryWhere && (questionAsset.getCdnType()==CdnType.RESOURCE || questionAsset.getCdnType()==CdnType.UNKNOWN) && !questionAsset.getIsGifSprite()) {
            
                 Debug.Log("Gif images is being downloaded from Resources Folder");
                 UnityEngine.Object[] texobjects;  
@@ -62,15 +62,15 @@ public class QAssetGifDownloader : QAssetDownloader<Texture2D> {
                 if(textures!=null && textures.Count > 0) {
                     retry = false;
                 }else {
-                    Debug.Log("Gif Asset " + questionAsset.assetUrl  +" Load retrying everywhere now since couldn't found in "+questionAsset.cdn);
+					Debug.Log("Gif Asset " + questionAsset.getAssetUrl()  +" Load retrying everywhere now since couldn't found in "+questionAsset.getCdnType());
                     tryEveryWhere = true;
                 }
                 
           } else {
             
-                for (int i=1; i<=questionAsset.gifFrameCount; i++ ) {
+				for (int i=1; i<=questionAsset.getGifFrameCount(); i++ ) {
                     Texture2D loadedAsset ;
-                    string extention = Path.GetExtension(questionAsset.assetUrl);
+					string extention = Path.GetExtension(questionAsset.getAssetUrl());
                     string url = gifResFolder + "_" + i + extention;
                     yield return  mbObject.StartCoroutine(CoroutineResolveLoad(url,
                         t => {
