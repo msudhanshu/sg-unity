@@ -16,7 +16,7 @@ namespace KiwiCommonDatabase
 		private static IBaseDbHelper dbHelper = null;
 		private static DatabaseManager _instance;
 		public List<string> DB_TABLES = new List<string> ();//new string[]{"MarketVersion", "QuestionModel", "PackageModel"};
-		string[] COMMON_DB_TABLES = new string[]{"MarketVersion"};
+		string[] COMMON_DB_TABLES = new string[]{"MarketVersion","PendingDownload"};
 
 		public static bool IsDbTable(FieldInfo field) {
 			foreach (object attribute in field.GetCustomAttributes(true))
@@ -132,7 +132,35 @@ namespace KiwiCommonDatabase
 			}
 		}
 
-	}
+
+		public void InsertMarketTable<T> (List<T> data)
+		{
+			if (SgUnity.ServerConfig.DB_PACKING)
+				dbHelper.UpdateTableSchema<T>();
+
+			if (data != null) {
+				foreach (T assetData in data) {
+					dbHelper.InsertOrUpdate<T> (assetData);
+				}
+			}
+		}
+
+		public void UpdateMarketVersion(int marketVersion) {
+			MarketVersion dbVersion = dbHelper.QueryObjectById<MarketVersion> (1);
+			if (dbVersion == null) {
+				dbVersion = new MarketVersion ();
+				dbVersion.id = 1;
+				dbVersion.version = marketVersion;
+				dbHelper.Insert<MarketVersion> (dbVersion);
+			} else {
+				dbVersion.version = marketVersion;
+				dbHelper.Update<MarketVersion> (dbVersion);
+			}
+		}
+
+	
+
+
 
 	#if TEST_DB
 		/**
@@ -199,32 +227,6 @@ namespace KiwiCommonDatabase
 			}
 			UpdateMarketVersion (marketVersion);
 		}
-
-		public void InsertMarketTable<T> (List<T> data)
-		{
-            if (SgUnity.ServerConfig.DB_PACKING)
-				dbHelper.UpdateTableSchema<T>();
-
-			if (data != null) {
-				foreach (T assetData in data) {
-					dbHelper.InsertOrUpdate<T> (assetData);
-				}
-			}
-		}
-
-		public void UpdateMarketVersion(int marketVersion) {
-			MarketVersion dbVersion = dbHelper.QueryObjectById<MarketVersion> (1);
-			if (dbVersion == null) {
-				dbVersion = new MarketVersion ();
-				dbVersion.id = 1;
-				dbVersion.version = marketVersion;
-				dbHelper.Insert<MarketVersion> (dbVersion);
-			} else {
-				dbVersion.version = marketVersion;
-				dbHelper.Update<MarketVersion> (dbVersion);
-			}
-		}
-
 
 		public void testAllDbOps ()
 		{
@@ -373,4 +375,5 @@ namespace KiwiCommonDatabase
 //        return null;
 //    }
 
+	}
 }

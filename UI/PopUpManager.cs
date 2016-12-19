@@ -61,7 +61,8 @@ public class PopUpManager : Manager<PopUpManager> {
 	public void ShowPanel(PopUpType panelType, bool allowOtherPopUps = true) {
 
 		if (panelType == PopUpType.DEFAULT) {
-			BuildingManager3D.ActiveBuilding = null;
+			//TEMP TODO SGUNITY REFACTORING
+			//BuildingManager3D.ActiveBuilding = null;
 			allowOtherPopUps = true;
 
 			if (scheduledPopUps.Count > 0) {

@@ -19,18 +19,19 @@ public class UIBasePopUp : UIGamePopUp {
 	override protected void Init() {
 		base.Init();
 	}
-
-	public virtual List<Asset> GetAssetData() {
-		return BuildingManager3D.GetInstance().GetAllBuildingTypes().ToList();
-	}
+	//TEMP TODO SGUNITY REFACTORING
+//	public virtual List<Asset> GetAssetData() {
+//		return BuildingManager3D.GetInstance().GetAllBuildingTypes().ToList();
+//	}
 
 	void Start() {
 		StartCoroutine(WaitForDataAndStart());
 	}
 
 	IEnumerator WaitForDataAndStart() {
-		while (!BuildingManager3D.GetInstance().IsReady())
-			yield return 0;
+		//TEMP TODO SGUNITY REFACTORING
+//		while (!BuildingManager3D.GetInstance().IsReady())
+//			yield return 0;
 		yield return 0;
 		if (!initialised) {
 			//FIXME: Anuj - Commented to make the build work

@@ -25,12 +25,14 @@ public class UIGamePopUp : MonoBehaviour {
 	virtual protected void Init() {
 		animator = this.gameObject.GetComponent<Animator>();
 	}
-	
-	virtual public void InitialiseWithBuilding(Building building) {
-	}
+
+	//TEMP TODO SGUNITY REFACTORING
+//	virtual public void InitialiseWithBuilding(Building building) {
+//	}
 	
 	virtual public void Show() {
-		if (panelType == PopUpType.DEFAULT && GridView.Instance != null) GridView.Instance.NormalMode(); 
+		//TEMP TODO SGUNITY REFACTORING
+		//if (panelType == PopUpType.DEFAULT && GridView.Instance != null) GridView.Instance.NormalMode(); 
 //		if (panelType == PopUpType.PLACE_BUILDING && GridView.Instance != null) GridView.Instance.BuildingMode(); 
 //		if (panelType == PopUpType.EDIT_PATHS && GridView.Instance != null) GridView.Instance.PathMode(); 
 		if (activePanel == this) {

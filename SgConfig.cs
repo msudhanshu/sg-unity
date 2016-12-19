@@ -56,17 +56,17 @@ public static class SgConfig {
 	}
 
 	public static string DefaultAssetCategoryPrefabName = "Building3D";
-	public static Dictionary<AssetCategoryEnum,string> CategoryPrefabNameMap = new  Dictionary<AssetCategoryEnum,string> 
-	{
-		{AssetCategoryEnum.BUILDING, "Building3D"},
-		{AssetCategoryEnum.TOWNBLDG, "Building3D"},
-		{AssetCategoryEnum.CROP , "Building3D"},
-		{AssetCategoryEnum.DECORATION , "Building3D"},
-		{AssetCategoryEnum.TREE , "Building3D"},
-		{AssetCategoryEnum.HELPER, "Character3D"},
-		{AssetCategoryEnum.RPGCHARACTER, "RpgCharacter3D"},
-		{AssetCategoryEnum.EXPANSION, "Building3D"}
-	};
+//	public static Dictionary<AssetCategoryEnum,string> CategoryPrefabNameMap = new  Dictionary<AssetCategoryEnum,string> 
+//	{
+//		{AssetCategoryEnum.BUILDING, "Building3D"},
+//		{AssetCategoryEnum.TOWNBLDG, "Building3D"},
+//		{AssetCategoryEnum.CROP , "Building3D"},
+//		{AssetCategoryEnum.DECORATION , "Building3D"},
+//		{AssetCategoryEnum.TREE , "Building3D"},
+//		{AssetCategoryEnum.HELPER, "Character3D"},
+//		{AssetCategoryEnum.RPGCHARACTER, "RpgCharacter3D"},
+//		{AssetCategoryEnum.EXPANSION, "Building3D"}
+//	};
 
 
 
