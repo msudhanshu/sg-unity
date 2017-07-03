@@ -19,8 +19,19 @@ namespace KiwiCommonDatabase
 	public static T wrapper = null;
 	bool diffRequestCompleted = false;
 	bool diffRequestSucceeded = false;
-    string diffUrl = ServerConfig.BASE_URL+"diff?user_id=<user_id>&version=<version>";
-    string newUserUrl =  ServerConfig.BASE_URL+ "user/new?email=<email>&device_id=<device>&app_version=1";
+		private string diffurl;
+	private string mDiffUrl {
+			get {
+					return SgUnityConfig.ServerConfig.GetBaseUrl + "/movie_diff?user_id=<user_id>&version=<version>";
+			}
+			set{ }
+		}
+		private string mNewUserUrl {
+			get {
+				return SgUnityConfig.ServerConfig.GetBaseUrl + "movie_user_new?email=<email>&device_id=<device>&app_version=1";
+			}
+			set{ }
+		}
 
 	string USERID_TAG = "<user_id>";
 	string VERSION_TAG = "<version>";
@@ -47,7 +58,7 @@ namespace KiwiCommonDatabase
 	IEnumerator GetDiff() {
 			int userId = PlayerPrefs.GetInt(SgConfig.USER_ID_KEY, -1);
 		if (userId == -1) {
-			newUserUrl = newUserUrl.Replace(EMAIL_TAG, SystemInfo.deviceName).Replace(DEVICE_TAG, SystemInfo.deviceUniqueIdentifier);
+			string newUserUrl = mNewUserUrl.Replace(EMAIL_TAG, "SystemInfo.deviceName").Replace(DEVICE_TAG, "SystemInfo.deviceUniqueIdentifier");
 			Debug.LogWarning("User URL = " + newUserUrl);
 
 			WWW newUserRequest = new WWW(newUserUrl);
@@ -65,7 +76,7 @@ namespace KiwiCommonDatabase
 		}
 
 			SgConfig.USER_ID = userId;
-		diffUrl = diffUrl.Replace(USERID_TAG, string.Format("" + userId)).Replace(VERSION_TAG, string.Format("" + GetCurrentDbVersion()));
+		string diffUrl = mDiffUrl.Replace(USERID_TAG, string.Format("" + userId)).Replace(VERSION_TAG, string.Format("" + GetCurrentDbVersion()));
 		Debug.LogWarning("Diff URL = " + diffUrl);
 
 		string jsondiff = null;

@@ -34,11 +34,11 @@ public class QAssetGifDownloader : QAssetDownloader<Texture2D> {
     }
 
     override protected string getServerUrl(string fileName) {
-        return SgUnity.ServerConfig.BASE_URL+"/externalAssets/"+gifResFolder+"/"+fileName;
+		return SgUnityConfig.ServerConfig.BASE_URL+"/externalAssets/"+gifResFolder+"/"+fileName;
     }
 
     override protected string getCdnUrl(string fileName) {
-        return SgUnity.ServerConfig.CDN_URL+"/"+gifResFolder+"/"+fileName;
+		return SgUnityConfig.ServerConfig.CDN_URL+"/"+gifResFolder+"/"+fileName;
     }
 
     IEnumerator CoroutineLoadGifImages(IAssetLoadCallback<List<Texture2D>> imagesLoadCallback) {

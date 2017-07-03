@@ -135,7 +135,7 @@ namespace KiwiCommonDatabase
 
 		public void InsertMarketTable<T> (List<T> data)
 		{
-			if (SgUnity.ServerConfig.DB_PACKING)
+			if (SgUnityConfig.ServerConfig.DB_PACKING)
 				dbHelper.UpdateTableSchema<T>();
 
 			if (data != null) {
