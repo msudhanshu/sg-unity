@@ -20,7 +20,8 @@ public enum CdnType {
 	APK,
 	SDCARD,
 	SERVER,
-	CDN
+	CDN,
+	FIREBASE_STORAGE
 }
 
 

@@ -4,8 +4,10 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using System;
 using SgUnity;
-//1. Resource  2. Sdcard   3.server   4.cdn   5.dropbox  6.googledrive
+//1. Resource  2. Sdcard   3.server   4.cdn   5.dropbox  6.googledrive 7.firebaseStorage
 using System.IO;
+using Firebase.Storage;
+using System.Threading.Tasks;
 
 
 public class QAssetDownloader<T> : MonoBehaviour  where T : UnityEngine.Object{
@@ -60,13 +62,17 @@ public class QAssetDownloader<T> : MonoBehaviour  where T : UnityEngine.Object{
     }
 
     virtual protected string getServerUrl(string fileName) {
-        return SgUnity.ServerConfig.BASE_URL+"/externalAssets/"+fileName;
+		return SgUnityConfig.ServerConfig.BASE_URL+"/externalAssets/"+fileName;
     }
 
     virtual protected string getCdnUrl(string fileName) {
-        return SgUnity.ServerConfig.CDN_URL+"/"+fileName;
+		return SgUnityConfig.ServerConfig.CDN_URL+"/"+fileName;
     }
-        
+     
+	virtual protected string getFirebaseStorageRefrenceUrl(string fileName) {
+		return SgFirebase.MyStorageBucket+"/"+fileName;
+	}
+
     //1,abstractoin at this level , for facebook dowloader api coroutine 
     //2. abstraction for downloading through , www, or resourceload, or facebookdownloadapi
 
@@ -141,6 +147,51 @@ public class QAssetDownloader<T> : MonoBehaviour  where T : UnityEngine.Object{
                 yield break;
             }
         }
+
+		if(tryEveryWhere || cdnType == CdnType.FIREBASE_STORAGE) {
+				Debug.Log("loading failed  and try again in firebase url "+ getFirebaseStorageRefrenceUrl(url) );
+				//yield  return mbObject.StartCoroutine(CoroutineLoadUrl(getCdnUrl(url), t => loadedAsset = t ));
+				//yield  return mbObject.StartCoroutine(SgFirebase.GetInstance().DownloadFromFirebaseStorageURL(getCdnUrl(url), t => loadedAsset = t ));
+			
+				/*
+				StorageReference reference = FirebaseStorage.DefaultInstance.GetReferenceFromUrl(getFirebaseStorageRefrenceUrl(url));
+				reference.GetDownloadUrlAsync().ContinueWith(task => {
+					if (!task.IsFaulted && !task.IsCanceled) {
+						string firebaseStorageDownloadurl = task.Result;
+						Debug.Log("Firebase storage Download URL: " + firebaseStorageDownloadurl);
+						//yield return mbObject.StartCoroutine(CoroutineLoadUrl(firebaseStorageDownloadurl, t => loadedAsset = t ));
+						// ... now download the file via WWW or UnityWebRequest.
+
+						WWW www = null;
+						//T loadedAsset = null;
+						www = new WWW(url);
+
+						while(!www.isDone) {
+							yield return 0;
+						}
+						try {
+							if(www!=null && www.error == null) {
+								
+								UnityEngine.Object t = null;
+								if(typeof(T) == typeof(AudioClip))
+									loadedAsset = (T)(UnityEngine.Object)www.GetAudioClip();
+								else if(typeof(T) == typeof(Texture2D) )
+									loadedAsset = (T)(UnityEngine.Object)www.texture;   
+								resultCallback(loadedAsset);
+							}
+						} catch (Exception e) {
+							Debug.Log(e.ToString());
+						}
+
+					}
+				});
+				*/
+			if(loadedAsset) {
+				resultCallback(loadedAsset);
+				//callback.loadedAsset(loadedAsset);
+				yield break;
+			}
+		}
 
         if(tryEveryWhere ) { // it means it has already done a pass of trying everywhere, so start retry now.
             retry = false;

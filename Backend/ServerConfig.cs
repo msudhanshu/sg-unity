@@ -1,9 +1,12 @@
 using System;
 
-namespace SgUnity
+namespace SgUnityConfig
 {
 partial class ServerConfig {
 //	public static String BASE_URL = "http://52.25.129.93";
+		public static String BASE_URL = "http://localhost:9000"; // "http://52.25.129.93";
+		public static String FIREBASE_CLOUD_FUNCTION_BASE_URL = "https://us-central1-unityfirebasetest-5c0bc.cloudfunctions.net";
+
 	public static String BATCH_REQUEST_URL = BASE_URL + "/batch/process?";
 	public static char[] commaDelimiters = {','};
 	public static char[] hyphenDelimiters = {'-'};
@@ -18,7 +21,15 @@ partial class ServerConfig {
 	public static int MAX_INTEGER_VALUE = 1000000;
 
     
-
+	public static string GetBaseUrl {
+		get { 
+			if (Config.FIREBASE_SERVER) {
+				return FIREBASE_CLOUD_FUNCTION_BASE_URL;
+			} else {
+				return BASE_URL;
+			}
+		}
+	}
 }
 
 }
