@@ -167,7 +167,7 @@ public class QAssetDownloader<T> : MonoBehaviour  where T : UnityEngine.Object{
             if(www!=null && www.error == null) {
                 UnityEngine.Object t = null;
                 if(typeof(T) == typeof(AudioClip))
-                    loadedAsset = (T)(UnityEngine.Object)www.audioClip;
+                    loadedAsset = (T)(UnityEngine.Object)www.GetAudioClip();
                 else if(typeof(T) == typeof(Texture2D) )
                     loadedAsset = (T)(UnityEngine.Object)www.texture;   
                 resultCallback(loadedAsset);

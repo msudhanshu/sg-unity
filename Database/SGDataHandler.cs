@@ -47,14 +47,14 @@ namespace KiwiCommonDatabase
 	IEnumerator GetDiff() {
 			int userId = PlayerPrefs.GetInt(SgConfig.USER_ID_KEY, -1);
 		if (userId == -1) {
-			newUserUrl = newUserUrl.Replace(EMAIL_TAG, SystemInfo.deviceName).Replace(DEVICE_TAG, SystemInfo.deviceUniqueIdentifier);
+			newUserUrl = newUserUrl.Replace(EMAIL_TAG, "SystemInfo.deviceName").Replace(DEVICE_TAG, SystemInfo.deviceUniqueIdentifier);
 			Debug.LogWarning("User URL = " + newUserUrl);
 
 			WWW newUserRequest = new WWW(newUserUrl);
 			yield return newUserRequest;
 
 			if (newUserRequest.error != null) {
-				Debug.LogError("Failed in new user URL");
+				Debug.LogError("Failed in new user URL : "+newUserUrl);
 				yield return -1;
 			}
 

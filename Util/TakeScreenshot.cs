@@ -42,7 +42,7 @@ public class TakeScreenshot : MonoBehaviour {
 	private void UnityDefaultCapture() {
 		string filename = ScreenShotName(resWidth, resHeight);
 		int superSize = Mathf.Max (1, resWidth / 512); //Factor by which to increase resolution.
-		Application.CaptureScreenshot(filename , superSize);
+		ScreenCapture.CaptureScreenshot(filename , superSize);
 		Debug.Log(string.Format("UnityDefaultCapture: Took screenshot to: {0}", filename));
 	}
 
